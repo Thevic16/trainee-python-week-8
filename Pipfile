@@ -15,6 +15,7 @@ marshmallow-sqlalchemy = "==0.24.1"
 jinja2 = "==2.11.2"
 markupsafe = "==1.1.1"
 itsdangerous = "==1.1.0"
+flask-jwt = "*"
 
 [dev-packages]
 

@@ -4,10 +4,16 @@ from flask_migrate import Migrate
 
 from ma import ma
 from db import db
+# Film app
 from resources.film_related_resources import category_resource
 from resources.film_related_resources import film_resource
 from resources.film_related_resources import season_resource
 from resources.film_related_resources import chapter_resource
+# Person app
+from resources.person_related_resources import person_resource
+from resources.person_related_resources import role_resource
+from resources.person_related_resources import filmpersonrole_resource
+from resources.person_related_resources import client_resource
 
 from marshmallow import ValidationError
 
@@ -35,6 +41,12 @@ api.add_namespace(category_resource.namespace)
 api.add_namespace(film_resource.namespace)
 api.add_namespace(season_resource.namespace)
 api.add_namespace(chapter_resource.namespace)
+
+# Person app
+api.add_namespace(person_resource.namespace)
+api.add_namespace(role_resource.namespace)
+api.add_namespace(filmpersonrole_resource.namespace)
+api.add_namespace(client_resource.namespace)
 
 
 @app.before_first_request
@@ -66,6 +78,29 @@ chapter_resource.namespace.add_resource(chapter_resource.ChapterResource,
                                         '/<int:id>/')
 chapter_resource.namespace.add_resource(chapter_resource.ChapterResourceList,
                                         "/")
+
+# Person app
+person_resource.namespace.add_resource(person_resource.PersonResource,
+                                       '/<int:id>/')
+person_resource.namespace.add_resource(person_resource.PersonResourceList,
+                                       "/")
+
+role_resource.namespace.add_resource(role_resource.RoleResource,
+                                     '/<int:id>/')
+role_resource.namespace.add_resource(role_resource.RoleResourceList,
+                                     "/")
+
+filmpersonrole_resource.namespace.add_resource(
+    filmpersonrole_resource.FilmPersonRoleResource,
+    '/<int:id>/')
+filmpersonrole_resource.namespace.add_resource(
+    filmpersonrole_resource.FilmPersonRoleResourceList,
+    "/")
+
+client_resource.namespace.add_resource(client_resource.ClientResource,
+                                       '/<int:id>/')
+client_resource.namespace.add_resource(client_resource.ClientResourceList,
+                                       "/")
 
 # Run server ------------------------------------------------------------------
 db.init_app(app)

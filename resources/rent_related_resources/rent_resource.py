@@ -1,26 +1,31 @@
 from flask import request
 from flask_restplus import fields, Namespace, Resource
 
-from models.person_models import FilmPersonRoleModel
-from schemas.person_schemas import FilmPersonRoleSchema
+from models.rent_models import RentModel
+from schemas.rent_schemas import RentSchema
 
-# FilmPersonRole --------------------------------------------------------------
-model_name_singular = 'film_person_role'
-model_name_plural = 'films_persons_roles'
-model = FilmPersonRoleModel
-schema = FilmPersonRoleSchema()
-list_schema = FilmPersonRoleSchema(many=True)
+# Rent ------------------------------------------------------------------------
+model_name_singular = 'rent'
+model_name_plural = 'rents'
+model = RentModel
+schema = RentSchema()
+list_schema = RentSchema(many=True)
 message_not_found = f"{model_name_singular} not found."
 namespace = Namespace(f'{model_name_plural}',
                       description=f'{model_name_plural} related operations')
-model_namespace = namespace.model('FilmPersonRole', {
+model_namespace = namespace.model('Rent', {
     'film_id': fields.Integer(f'film_id of the {model_name_singular}'),
-    'person_id': fields.Integer(f'person_id of the {model_name_singular}'),
-    'role_id': fields.Integer(f'role_id of the {model_name_singular}'),
+    'client_id': fields.Integer(f'client_id of the {model_name_singular}'),
+    'amount': fields.Integer(f'amount of the {model_name_singular}'),
+    'start_date': fields.String(f'start_date of the {model_name_singular}'),
+    'return_date': fields.String(f'return_date of the {model_name_singular}'),
+    'actual_return_date':
+        fields.String(f'actual_return_date of the {model_name_singular}'),
+    'state': fields.String(f'state of the {model_name_singular}'),
 })
 
 
-class FilmPersonRoleResource(Resource):
+class RentResource(Resource):
     def get(self, id):
         model_data = model.find_by_id(id)
         if model_data:
@@ -42,8 +47,12 @@ class FilmPersonRoleResource(Resource):
 
         if model_data:
             model_data.film_id = model_json['film_id']
-            model_data.person_id = model_json['person_id']
-            model_data.role_id = model_json['role_id']
+            model_data.client_id = model_json['client_id']
+            model_data.amount = model_json['amount']
+            model_data.start_date = model_json['start_date']
+            model_data.return_date = model_json['return_date']
+            model_data.actual_return_date = model_json['actual_return_date']
+            model_data.state = model_json['state']
         else:
             model_data = schema.load(model_json)
 
@@ -51,7 +60,7 @@ class FilmPersonRoleResource(Resource):
         return schema.dump(model_data), 200
 
 
-class FilmPersonRoleResourceList(Resource):
+class RentResourceList(Resource):
     @namespace.doc(f'Get all the {model_name_plural}')
     def get(self):
         return list_schema.dump(model.find_all()), 200

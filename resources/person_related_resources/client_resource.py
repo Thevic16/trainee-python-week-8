@@ -14,7 +14,7 @@ message_not_found = f"{model_name_singular} not found."
 namespace = Namespace(f'{model_name_plural}',
                       description=f'{model_name_plural} related operations')
 model_namespace = namespace.model('Client', {
-    'person_id': fields.String(f'person_id of the {model_name_singular}'),
+    'person_id': fields.Integer(f'person_id of the {model_name_singular}'),
     'direction': fields.String(f'direction of the {model_name_singular}'),
     'phone': fields.String(f'phone of the {model_name_singular}'),
     'email': fields.String(f'email of the {model_name_singular}'),

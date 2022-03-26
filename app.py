@@ -14,6 +14,8 @@ from resources.person_related_resources import person_resource
 from resources.person_related_resources import role_resource
 from resources.person_related_resources import filmpersonrole_resource
 from resources.person_related_resources import client_resource
+# Rent app
+from resources.rent_related_resources import rent_resource
 
 from marshmallow import ValidationError
 
@@ -47,6 +49,9 @@ api.add_namespace(person_resource.namespace)
 api.add_namespace(role_resource.namespace)
 api.add_namespace(filmpersonrole_resource.namespace)
 api.add_namespace(client_resource.namespace)
+
+# Rent app
+api.add_namespace(rent_resource.namespace)
 
 
 @app.before_first_request
@@ -101,6 +106,12 @@ client_resource.namespace.add_resource(client_resource.ClientResource,
                                        '/<int:id>/')
 client_resource.namespace.add_resource(client_resource.ClientResourceList,
                                        "/")
+
+# Rent app
+rent_resource.namespace.add_resource(rent_resource.RentResource,
+                                     '/<int:id>/')
+rent_resource.namespace.add_resource(rent_resource.RentResourceList,
+                                     "/")
 
 # Run server ------------------------------------------------------------------
 db.init_app(app)

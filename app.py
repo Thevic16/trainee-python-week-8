@@ -4,9 +4,11 @@ from flask_migrate import Migrate
 
 from ma import ma
 from db import db
-from resources.film_resources import (CategoryResource, CategoryResourceList,
-                                      category_ns, categories_ns, film_ns,
-                                      films_ns, FilmResource, FilmResourceList)
+from resources.film_related_resources import category_resource
+from resources.film_related_resources import film_resource
+from resources.film_related_resources import season_resource
+from resources.film_related_resources import chapter_resource
+
 from marshmallow import ValidationError
 
 import os
@@ -29,11 +31,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 
 # Add namespaces --------------------------------------------------------------
 # Film app
-api.add_namespace(category_ns)
-api.add_namespace(categories_ns)
-
-api.add_namespace(film_ns)
-api.add_namespace(films_ns)
+api.add_namespace(category_resource.namespace)
+api.add_namespace(film_resource.namespace)
+api.add_namespace(season_resource.namespace)
+api.add_namespace(chapter_resource.namespace)
 
 
 @app.before_first_request
@@ -47,12 +48,24 @@ def handle_validation_error(error):
 
 
 # Defining resources ----------------------------------------------------------
-#Film app
-category_ns.add_resource(CategoryResource, '/<int:id>/')
-categories_ns.add_resource(CategoryResourceList, "/")
+# Film app
+category_resource.namespace.add_resource(category_resource.CategoryResource,
+                                         '/<int:id>/')
+category_resource.namespace.add_resource(
+    category_resource.CategoryResourceList, "/")
 
-film_ns.add_resource(FilmResource, '/<int:id>/')
-films_ns.add_resource(FilmResourceList, "/")
+film_resource.namespace.add_resource(film_resource.FilmResource, '/<int:id>/')
+film_resource.namespace.add_resource(film_resource.FilmResourceList, "/")
+
+season_resource.namespace.add_resource(season_resource.SeasonResource,
+                                       '/<int:id>/')
+season_resource.namespace.add_resource(season_resource.SeasonResourceList,
+                                       "/")
+
+chapter_resource.namespace.add_resource(chapter_resource.ChapterResource,
+                                        '/<int:id>/')
+chapter_resource.namespace.add_resource(chapter_resource.ChapterResourceList,
+                                        "/")
 
 # Run server ------------------------------------------------------------------
 db.init_app(app)

@@ -2,7 +2,8 @@ import validators.validators
 from db import db
 from typing import List
 
-from bussiness_logic.bussiness_logic import FilmBusinessLogic
+from bussiness_logic.bussiness_logic import FilmBusinessLogic, \
+    PersonBusinessLogic
 
 
 # Film related models
@@ -229,6 +230,7 @@ class PersonModel(db.Model):
         self.gender = gender
         self.date_of_birth = date_of_birth
         self.person_type = person_type
+        self.age = self.get_age(date_of_birth)
 
     def __repr__(self):
         return f"{self.name} {self.lastname}"
@@ -236,7 +238,8 @@ class PersonModel(db.Model):
     def json(self):
         return {'name': self.name, 'lastname': self.lastname,
                 'gender': self.gender, 'date_of_birth': self.date_of_birth,
-                'person_type': self.person_type}
+                'person_type': self.person_type,
+                'age': self.get_age(self.date_of_birth)}
 
     @classmethod
     def find_by_name(cls, name) -> "PersonModel":
@@ -244,13 +247,29 @@ class PersonModel(db.Model):
 
     @classmethod
     def find_by_id(cls, _id) -> "PersonModel":
-        return cls.query.filter_by(id=_id).first()
+        person = cls.query.filter_by(id=_id).first()
+        cls.set_age(person)
+        return person
 
     @classmethod
     def find_all(cls) -> List["PersonModel"]:
-        return cls.query.all()
+        persons = cls.query.all()
+        for person in persons:
+            cls.set_age(person)
+        return persons
+
+    @staticmethod
+    def get_age(date_of_birth):
+        return PersonBusinessLogic.get_age_by_birthday(date_of_birth)
+
+    @classmethod
+    def set_age(cls, person):
+        person.age = cls.get_age(person.date_of_birth)
 
     def save_to_db(self) -> None:
+        validators.validators.validate_gender(self.gender)
+        validators.validators.validator_date_limit_today(self.date_of_birth)
+        validators.validators.validate_person_type(self.person_type)
         db.session.add(self)
         db.session.commit()
 
@@ -377,8 +396,10 @@ class ClientModel(db.Model):
         return cls.query.all()
 
     def save_to_db(self) -> None:
-        validators.validate_email(self.email)
-        validators.validate_phone(self.phone)
+        validators.validators.validate_email(self.email)
+        validators.validators.validate_phone(self.phone)
+        validators.validators.validate_person_type_client(
+            PersonModel.find_by_id(self.person_id).person_type)
         db.session.add(self)
         db.session.commit()
 

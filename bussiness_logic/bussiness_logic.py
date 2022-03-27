@@ -1,5 +1,6 @@
 from marshmallow import ValidationError
-from datetime import date
+from datetime import date, datetime
+
 
 from utilities.logger import Logger
 
@@ -69,6 +70,7 @@ class PersonBusinessLogic:
             message (str): N.A, abbreviation for not applicable or not
             available
         """
+        # birthday = datetime.strptime(birthday_str, '%Y-%m-%d')
         if birthday:
             return int((date.today() - birthday).days / 365.25)
         else:

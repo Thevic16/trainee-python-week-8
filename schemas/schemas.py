@@ -41,6 +41,8 @@ class ChapterSchema(ma.SQLAlchemyAutoSchema):
 
 # Person related schemas
 class PersonSchema(ma.SQLAlchemyAutoSchema):
+    age = fields.Integer()
+
     class Meta:
         model = PersonModel
         load_instance = True

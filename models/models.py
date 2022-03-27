@@ -2,7 +2,7 @@ from validators import validators
 from db import db
 from typing import List
 
-from bussiness_logic.bussiness_logic import FilmBusinessLogic, \
+from business_logic.business_logic import FilmBusinessLogic, \
     PersonBusinessLogic, RentBusinessLogic
 
 

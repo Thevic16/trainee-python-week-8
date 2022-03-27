@@ -3,7 +3,7 @@ from marshmallow import ValidationError
 from datetime import date
 
 # New Validators
-from bussiness_logic.bussiness_logic import RentBusinessLogic
+from business_logic.business_logic import RentBusinessLogic
 
 
 def validate_email(email):

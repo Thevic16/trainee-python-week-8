@@ -1,5 +1,6 @@
-from flask import request
+from flask import request, jsonify, make_response
 from flask_restplus import fields, Namespace, Resource
+from marshmallow import ValidationError
 
 from models.models import CategoryModel
 from schemas.schemas import CategorySchema
@@ -45,7 +46,11 @@ class CategoryResource(Resource):
         else:
             model_data = schema.load(model_json)
 
-        model_data.save_to_db()
+        try:
+            model_data.save_to_db()
+        except ValidationError as err:
+            return make_response(jsonify(msg=f'Error: {err.messages}. '), 400)
+
         return schema.dump(model_data), 200
 
 
@@ -59,6 +64,9 @@ class CategoryResourceList(Resource):
     def post(self):
         model_json = request.get_json()
         model_data = schema.load(model_json)
-        model_data.save_to_db()
+        try:
+            model_data.save_to_db()
+        except ValidationError as err:
+            return make_response(jsonify(msg=f'Error: {err.messages}. '), 400)
 
         return schema.dump(model_data), 201

@@ -59,11 +59,10 @@ def create_tables():
     db.create_all()
 
 
-'''
 @api.errorhandler(ValidationError)
 def handle_validation_error(error):
     return jsonify(error.messages), 400
-'''
+
 
 # Defining resources ----------------------------------------------------------
 # Film app

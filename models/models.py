@@ -1,4 +1,4 @@
-import validators.validators
+from validators import validators
 from db import db
 from typing import List
 
@@ -105,13 +105,13 @@ class FilmModel(db.Model):
         return films
 
     def save_to_db(self) -> None:
-        validators.validators.validator_date_limit_today(self.release_date)
-        validators.validators.validator_no_negative(self.price_by_day)
-        validators.validators.validator_no_negative(self.stock)
+        validators.validator_date_limit_today(self.release_date)
+        validators.validator_no_negative(self.price_by_day)
+        validators.validator_no_negative(self.stock)
         FilmBusinessLogic.validate_stock_greater_availability(self.stock,
                                                               self.availability
                                                               )
-        validators.validators.validate_film_type(self.film_type)
+        validators.validate_film_type(self.film_type)
 
         db.session.add(self)
         db.session.commit()
@@ -267,9 +267,9 @@ class PersonModel(db.Model):
         person.age = cls.get_age(person.date_of_birth)
 
     def save_to_db(self) -> None:
-        validators.validators.validate_gender(self.gender)
-        validators.validators.validator_date_limit_today(self.date_of_birth)
-        validators.validators.validate_person_type(self.person_type)
+        validators.validate_gender(self.gender)
+        validators.validator_date_limit_today(self.date_of_birth)
+        validators.validate_person_type(self.person_type)
         db.session.add(self)
         db.session.commit()
 
@@ -396,9 +396,9 @@ class ClientModel(db.Model):
         return cls.query.all()
 
     def save_to_db(self) -> None:
-        validators.validators.validate_email(self.email)
-        validators.validators.validate_phone(self.phone)
-        validators.validators.validate_person_type_client(
+        validators.validate_email(self.email)
+        validators.validate_phone(self.phone)
+        validators.validate_person_type_client(
             PersonModel.find_by_id(self.person_id).person_type)
         db.session.add(self)
         db.session.commit()
@@ -481,13 +481,13 @@ class RentModel(db.Model):
 
     def save_to_db(self) -> None:
         # Validations
-        validators.validators.validator_no_negative(self.amount)
-        validators.validators.validate_rent_state(self.state)
-        validators.validators.RentValidation.validate_date1_eq_or_low_date2(
+        validators.validator_no_negative(self.amount)
+        validators.validate_rent_state(self.state)
+        validators.RentValidation.validate_date1_eq_or_low_date2(
             self.return_date, self.start_date, 'return_date')
-        validators.validators.RentValidation.validate_date_gt_max_limit(
+        validators.RentValidation.validate_date_gt_max_limit(
             self.return_date, self.start_date, 'return_date')
-        validators.validators.RentValidation.validate_date1_gr_or_eq_date2(
+        validators.RentValidation.validate_date1_gr_or_eq_date2(
             self.actual_return_date, self.start_date, 'actual_return_date')
 
         db.session.add(self)

@@ -3,7 +3,7 @@ from db import db
 from typing import List
 
 from bussiness_logic.bussiness_logic import FilmBusinessLogic, \
-    PersonBusinessLogic
+    PersonBusinessLogic, RentBusinessLogic
 
 
 # Film related models
@@ -434,6 +434,9 @@ class RentModel(db.Model):
         self.return_date = return_date
         self.actual_return_date = actual_return_date
         self.state = state
+        self.cost = self.get_cost(amount, start_date, return_date,
+                                  actual_return_date,
+                                  FilmModel.find_by_id(film_id))
 
     def __repr__(self):
         return \
@@ -450,11 +453,16 @@ class RentModel(db.Model):
 
     @classmethod
     def find_by_id(cls, _id) -> "RentModel":
-        return cls.query.filter_by(id=_id).first()
+        rent = cls.query.filter_by(id=_id).first()
+        cls.set_cost(rent)
+        return rent
 
     @classmethod
     def find_all(cls) -> List["RentModel"]:
-        return cls.query.all()
+        rents = cls.query.all()
+        for rent in rents:
+            cls.set_cost(rent)
+        return rents
 
     @classmethod
     def find_all_count_by_film_id(cls, film_id: int) -> List["RentModel"]:
@@ -462,7 +470,7 @@ class RentModel(db.Model):
 
     @classmethod
     def find_all_by_film_id(cls, film_id: int) -> List["RentModel"]:
-        return cls.query.filter_by(film_id=film_id)
+        return cls.query.filter_by(film_id=film_id, state='open')
 
     @classmethod
     def get_total_amount_by_film_id(cls, film_id: int) -> int:
@@ -472,6 +480,16 @@ class RentModel(db.Model):
         return total
 
     def save_to_db(self) -> None:
+        # Validations
+        validators.validators.validator_no_negative(self.amount)
+        validators.validators.validate_rent_state(self.state)
+        validators.validators.RentValidation.validate_date1_eq_or_low_date2(
+            self.return_date, self.start_date, 'return_date')
+        validators.validators.RentValidation.validate_date_gt_max_limit(
+            self.return_date, self.start_date, 'return_date')
+        validators.validators.RentValidation.validate_date1_gr_or_eq_date2(
+            self.actual_return_date, self.start_date, 'actual_return_date')
+
         db.session.add(self)
         db.session.commit()
 
@@ -486,3 +504,16 @@ class RentModel(db.Model):
 
     def get_person_id(self):
         return ClientModel.find_by_id(self.film_id).person_id
+
+    @staticmethod
+    def get_cost(amount, start_date, return_date, actual_return_date, film):
+        return RentBusinessLogic.get_rent_cost(amount, start_date,
+                                               return_date,
+                                               actual_return_date,
+                                               film.price_by_day)
+
+    @classmethod
+    def set_cost(cls, rent):
+        rent.cost = cls.get_cost(rent.amount, rent.start_date,
+                                 rent.return_date, rent.actual_return_date,
+                                 FilmModel.find_by_id(rent.film_id))

@@ -76,6 +76,8 @@ class ClientSchema(ma.SQLAlchemyAutoSchema):
 
 # Rent related schemas
 class RentSchema(ma.SQLAlchemyAutoSchema):
+    cost = fields.Float()
+
     class Meta:
         model = RentModel
         load_instance = True

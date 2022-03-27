@@ -41,6 +41,11 @@ def validate_person_type_client(person_type):
         raise ValidationError('person_type should be client')
 
 
+def validate_rent_state(film_type):
+    if film_type not in ('open', 'close'):
+        raise ValidationError('state should be open or close')
+
+
 # Film Validators
 
 def validator_date_limit_today(input_date: date) -> date:

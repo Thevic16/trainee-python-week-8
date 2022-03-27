@@ -28,29 +28,6 @@ class FilmBusinessLogic:
             raise ValidationError({'availability': (
                 "The availability shouldn't be higher than stock")})
 
-    @staticmethod
-    def validate_film_type_equal_prequel_film_type(film_type: str,
-                                                   prequel_film_type: str):
-        """
-        Validate that type of the film and film prequel are equal
-
-        Args:
-            film_type (str): stock of the film
-            prequel_film_type (str): availability of the film
-
-        Raises:
-            ValidationError: The film prequel should be the same type as the
-             current film type
-        """
-        if prequel_film_type is not None:
-            if film_type != prequel_film_type:
-                raise ValidationError(
-                    {'film_prequel': ('The film prequel should '
-                                      'be the same type as '
-                                      'the current film type. '
-                                      '(Example both movie '
-                                      'type)')})
-
 
 class PersonBusinessLogic:
     """
@@ -223,22 +200,3 @@ class RentBusinessLogic:
 
         Logger.debug(f"get_actual_cost: {actual_cost}")
         return actual_cost
-
-    # Method about state
-    @staticmethod
-    def state_close_return_films(state: str, state_presave: str,
-                                 amount: int, film: 'Film'):
-        """
-        If a rent is close put films available to rent again
-
-        Args:
-            state (str): State of the rent
-            state_presave (str): State of the rent before save
-            amount (int):  Amount of film to rent
-            film (Film): film to rent
-        """
-        if state == 'close' and state_presave == 'open':
-            film.availability += amount
-            Logger.debug(f"film.availability:{film.availability}")
-            Logger.debug(f"film.stock:{film.stock}")
-            film.save()

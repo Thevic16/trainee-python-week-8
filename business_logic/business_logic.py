@@ -1,5 +1,5 @@
 from marshmallow import ValidationError
-from datetime import date, datetime
+from datetime import date
 
 
 from utilities.logger import Logger

@@ -1,8 +1,8 @@
 from flask import request
 from flask_restplus import fields, Namespace, Resource
 
-from models.person_models import RoleModel
-from schemas.person_schemas import RoleSchema
+from models.models import RoleModel
+from schemas.schemas import RoleSchema
 
 # role ---------------------------------------------------------------------
 model_name_singular = 'role'

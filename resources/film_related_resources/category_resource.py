@@ -1,8 +1,8 @@
 from flask import request
 from flask_restplus import fields, Namespace, Resource
 
-from models.film_models import CategoryModel
-from schemas.film_schemas import CategorySchema
+from models.models import CategoryModel
+from schemas.schemas import CategorySchema
 
 # Category --------------------------------------------------------------------
 model_name_singular = 'Category'

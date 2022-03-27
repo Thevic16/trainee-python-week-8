@@ -1,8 +1,8 @@
 from flask import request
 from flask_restplus import fields, Namespace, Resource
 
-from models.rent_models import RentModel
-from schemas.rent_schemas import RentSchema
+from models.models import RentModel
+from schemas.schemas import RentSchema
 
 # Rent ------------------------------------------------------------------------
 model_name_singular = 'rent'

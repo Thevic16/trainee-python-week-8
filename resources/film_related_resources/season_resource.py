@@ -1,8 +1,8 @@
 from flask import request
 from flask_restplus import fields, Namespace, Resource
 
-from models.film_models import SeasonModel
-from schemas.film_schemas import SeasonSchema
+from models.models import SeasonModel
+from schemas.schemas import SeasonSchema
 
 # Season ----------------------------------------------------------------------
 model_name_singular = 'Season'

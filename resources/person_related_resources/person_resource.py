@@ -1,8 +1,8 @@
 from flask import request
 from flask_restplus import fields, Namespace, Resource
 
-from models.person_models import PersonModel
-from schemas.person_schemas import PersonSchema
+from models.models import PersonModel
+from schemas.schemas import PersonSchema
 
 # Person ---------------------------------------------------------------------
 model_name_singular = 'Person'

@@ -1,8 +1,8 @@
 from flask import request
 from flask_restplus import fields, Namespace, Resource
 
-from models.film_models import ChapterModel
-from schemas.film_schemas import ChapterSchema
+from models.models import ChapterModel
+from schemas.schemas import ChapterSchema
 
 # Chapter ---------------------------------------------------------------------
 model_name_singular = 'Chapter'

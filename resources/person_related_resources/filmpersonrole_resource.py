@@ -1,8 +1,8 @@
 from flask import request
 from flask_restplus import fields, Namespace, Resource
 
-from models.person_models import FilmPersonRoleModel
-from schemas.person_schemas import FilmPersonRoleSchema
+from models.models import FilmPersonRoleModel
+from schemas.schemas import FilmPersonRoleSchema
 
 # FilmPersonRole --------------------------------------------------------------
 model_name_singular = 'film_person_role'

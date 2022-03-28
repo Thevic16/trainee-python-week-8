@@ -5,7 +5,9 @@ from flask_migrate import Migrate
 from ma import ma
 from db import db
 # Account app
+from models.models import AccountModel
 from resources.account_related_resource import account_resource
+from resources.account_related_resource import authentication_resource
 # Film app
 from resources.film_related_resources import category_resource
 from resources.film_related_resources import film_resource
@@ -26,7 +28,7 @@ from dotenv import load_dotenv
 
 # JWT related imports
 from security import authenticate, identity
-from flask_jwt import JWT
+from flask_jwt_extended import JWTManager
 
 # Load virtual variables ------------------------------------------------------
 load_dotenv()  # take environment variables from .env.
@@ -46,6 +48,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 # Add namespaces --------------------------------------------------------------
 # Account app
 api.add_namespace(account_resource.namespace)
+api.add_namespace(authentication_resource.namespace)
 
 # Film app
 api.add_namespace(category_resource.namespace)
@@ -78,7 +81,11 @@ def handle_validation_error(error):
 account_resource.namespace.add_resource(account_resource.AccountResource,
                                         '/<int:id>/')
 account_resource.namespace.add_resource(
-                                    account_resource.AccountResourceList, "/")
+    account_resource.AccountResourceList, "/")
+
+authentication_resource.namespace.add_resource(
+    authentication_resource.AuthenticationResource, "/")
+
 
 # Film app
 category_resource.namespace.add_resource(category_resource.CategoryResource,
@@ -132,7 +139,21 @@ rent_resource.namespace.add_resource(rent_resource.RentResourceList,
 db.init_app(app)
 ma.init_app(app)
 migrate = Migrate(app, db)  # Add migrations
-jwt = JWT(app, authenticate, identity)
+jwt = JWTManager(app)
+
+
+# JWT related
+'''
+@jwt.user_claims_loader
+def add_claims_to_jwt(identity):
+    account = AccountModel.find_by_id(identity)
+    if account.is_admin:
+        return {'is_admin': True, 'is_employee': True}
+    elif account.is_employee:
+        return {'is_admin': False, 'is_employee': True}
+    else:
+        return {'is_admin': False, 'is_employee': False}
+'''
 
 if os.getenv('DEBUG_STATE') == 'True':
     app.run(port=os.getenv('PORT'), debug=True)

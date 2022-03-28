@@ -28,11 +28,10 @@ link: https://week7-film-rental-system.herokuapp.com/api/account/
 
 
 # Heroku URLs for generate and refresh JWT token.
-Note: This is using "Bearer" as the JWT prefix. 
+Note: This is using "JWT" as the JWT prefix. 
 
-link: https://week7-film-rental-system.herokuapp.com/api/auth/jwt/
+link: https://week7-film-rental-system.herokuapp.com/auth/
 
-link: https://week7-film-rental-system.herokuapp.com/api/auth/jwt/refresh/
 
 # Heroku URl for API documentation. 
 link: https://week7-film-rental-system.herokuapp.com/api/doc/

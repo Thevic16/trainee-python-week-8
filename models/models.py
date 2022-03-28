@@ -30,7 +30,7 @@ class AccountModel(db.Model):
                 'is_admin': self.is_admin, 'is_employee': self.is_employee}
 
     @classmethod
-    def find_by_name(cls, email) -> "AccountModel":
+    def find_by_email(cls, email) -> "AccountModel":
         return cls.query.filter_by(email=email).first()
 
     @classmethod

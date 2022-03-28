@@ -24,6 +24,10 @@ from marshmallow import ValidationError
 import os
 from dotenv import load_dotenv
 
+# JWT related imports
+from security import authenticate, identity
+from flask_jwt import JWT
+
 # Load virtual variables ------------------------------------------------------
 load_dotenv()  # take environment variables from .env.
 
@@ -128,6 +132,7 @@ rent_resource.namespace.add_resource(rent_resource.RentResourceList,
 db.init_app(app)
 ma.init_app(app)
 migrate = Migrate(app, db)  # Add migrations
+jwt = JWT(app, authenticate, identity)
 
 if os.getenv('DEBUG_STATE') == 'True':
     app.run(port=os.getenv('PORT'), debug=True)

@@ -4,6 +4,8 @@ from flask_migrate import Migrate
 
 from ma import ma
 from db import db
+# Account app
+from resources.account_related_resource import account_resource
 # Film app
 from resources.film_related_resources import category_resource
 from resources.film_related_resources import film_resource
@@ -38,6 +40,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 # app.config['PROPAGATE_EXCEPTIONS'] = True
 
 # Add namespaces --------------------------------------------------------------
+# Account app
+api.add_namespace(account_resource.namespace)
+
 # Film app
 api.add_namespace(category_resource.namespace)
 api.add_namespace(film_resource.namespace)
@@ -65,6 +70,12 @@ def handle_validation_error(error):
 
 
 # Defining resources ----------------------------------------------------------
+# Account app
+account_resource.namespace.add_resource(account_resource.AccountResource,
+                                        '/<int:id>/')
+account_resource.namespace.add_resource(
+                                    account_resource.AccountResourceList, "/")
+
 # Film app
 category_resource.namespace.add_resource(category_resource.CategoryResource,
                                          '/<int:id>/')

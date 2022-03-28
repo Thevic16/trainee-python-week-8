@@ -6,6 +6,51 @@ from business_logic.business_logic import FilmBusinessLogic, \
     PersonBusinessLogic, RentBusinessLogic
 
 
+# Account related model
+class AccountModel(db.Model):
+    __tablename__ = "account"
+
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True)
+    password = db.Column(db.String(500))
+    is_admin = db.Column(db.Boolean)
+    is_employee = db.Column(db.Boolean)
+
+    def __init__(self, email, password, is_admin, is_employee):
+        self.email = email
+        self.password = password
+        self.is_admin = is_admin
+        self.is_employee = is_employee
+
+    def __repr__(self):
+        return self.email
+
+    def json(self):
+        return {'email': self.email, 'password': self.password,
+                'is_admin': self.is_admin, 'is_employee': self.is_employee}
+
+    @classmethod
+    def find_by_name(cls, email) -> "AccountModel":
+        return cls.query.filter_by(email=email).first()
+
+    @classmethod
+    def find_by_id(cls, _id) -> "AccountModel":
+        return cls.query.filter_by(id=_id).first()
+
+    @classmethod
+    def find_all(cls) -> List["AccountModel"]:
+        return cls.query.all()
+
+    def save_to_db(self) -> None:
+        validators.validate_email(self.email)
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self) -> None:
+        db.session.delete(self)
+        db.session.commit()
+
+
 # Film related models
 class CategoryModel(db.Model):
     __tablename__ = "category"

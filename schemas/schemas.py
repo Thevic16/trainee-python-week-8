@@ -1,8 +1,18 @@
 from marshmallow import EXCLUDE
 from ma import ma
-from models.models import CategoryModel, FilmModel, SeasonModel, ChapterModel, \
-    PersonModel, RoleModel, FilmPersonRoleModel, ClientModel, RentModel
+from models.models import (CategoryModel, FilmModel, SeasonModel, ChapterModel,
+                           PersonModel, RoleModel, FilmPersonRoleModel,
+                           ClientModel, RentModel,
+                           AccountModel)
 from marshmallow import fields
+
+
+# Account related schema
+class AccountSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = AccountModel
+        load_instance = True
+        include_fk = True
 
 
 # Film related schemas

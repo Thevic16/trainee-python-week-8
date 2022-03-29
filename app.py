@@ -44,7 +44,7 @@ api = Api(bluePrint, doc='/doc/', title='Film Rental System Application')
 app.register_blueprint(bluePrint)
 
 # Database configuration ------------------------------------------------------
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # app.config['PROPAGATE_EXCEPTIONS'] = True
 

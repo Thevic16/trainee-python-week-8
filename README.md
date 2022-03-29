@@ -8,7 +8,7 @@
 - You have to specify the environment variables (see .env-example).
 - There are some details to consider when specifying those variables:
     - The environment variable "DEBUG_STATE" (True / False) defines if the
-      Django app runs in debugger mode or not.
+      Flask app runs in debugger mode or not.
     
 - Run "docker-compose up" to start the app. 
 
@@ -26,10 +26,10 @@ Also, If you wish you can create your accounts using the followings links.<br />
 - Register your account. <br />
 link: https://week8-film-rental-system.herokuapp.com/api/account/
 
-Note: you must provide admin token. 
+Note: using the verb POST see Postman collection for more information. 
 
-# Heroku URLs for generate and refresh JWT token.
-Note: This is using "Bearer" as the JWT prefix. 
+# Heroku URLs for generate the JWT token.
+Note: This is using "Bearer" as the JWT prefix. (see Postman collection) 
 
 link: https://week8-film-rental-system.herokuapp.com/api/authentication
 

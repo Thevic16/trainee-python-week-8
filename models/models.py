@@ -390,11 +390,11 @@ class FilmPersonRoleModel(db.Model):
                 'role_id': self.role_id}
 
     @classmethod
-    def find_by_id(cls, _id) -> "FilmPersonRole":
+    def find_by_id(cls, _id) -> "FilmPersonRoleModel":
         return cls.query.filter_by(id=_id).first()
 
     @classmethod
-    def find_all(cls) -> List["FilmPersonRole"]:
+    def find_all(cls) -> List["FilmPersonRoleModel"]:
         return cls.query.all()
 
     def save_to_db(self) -> None:
@@ -433,11 +433,11 @@ class ClientModel(db.Model):
                 'phone': self.phone, 'email': self.email}
 
     @classmethod
-    def find_by_id(cls, _id) -> "Client":
+    def find_by_id(cls, _id) -> "ClientModel":
         return cls.query.filter_by(id=_id).first()
 
     @classmethod
-    def find_all(cls) -> List["Client"]:
+    def find_all(cls) -> List["ClientModel"]:
         return cls.query.all()
 
     def save_to_db(self) -> None:

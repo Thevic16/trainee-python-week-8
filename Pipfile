@@ -20,6 +20,8 @@ flask-jwt-extended = "==3.8.2"
 pyjwt = "==1.7.1"
 
 [dev-packages]
+flake8 = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.7"

@@ -67,11 +67,9 @@ class RentResource(Resource):
             model_data.start_date = datetime.strptime(model_json['start_date'],
                                                       '%Y-%m-%d').date()
             model_data.return_date = datetime.strptime(
-                model_json['return_date']
-                , '%Y-%m-%d').date()
+                model_json['return_date'], '%Y-%m-%d').date()
             model_data.actual_return_date = datetime.strptime(
-                model_json['actual_return_date']
-                , '%Y-%m-%d').date()
+                model_json['actual_return_date'], '%Y-%m-%d').date()
             model_data.state = model_json['state']
         else:
             model_data = schema.load(model_json)

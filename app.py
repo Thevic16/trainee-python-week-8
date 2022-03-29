@@ -31,7 +31,6 @@ import os
 from dotenv import load_dotenv
 
 # JWT related imports
-from security import authenticate, identity
 from flask_jwt_extended import JWTManager
 
 # Load virtual variables ------------------------------------------------------

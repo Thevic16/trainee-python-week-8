@@ -1,6 +1,10 @@
 from flask import Flask, Blueprint, jsonify
+from flask_jwt_extended.exceptions import NoAuthorizationError, \
+    InvalidHeaderError
 from flask_restplus import Api
 from flask_migrate import Migrate
+from jwt import ExpiredSignatureError, InvalidSignatureError
+from sqlalchemy.exc import IntegrityError
 
 from ma import ma
 from db import db
@@ -76,6 +80,31 @@ def handle_validation_error(error):
     return jsonify(error.messages), 400
 
 
+@api.errorhandler(NoAuthorizationError)
+def handle_NoAuthorizationError(error):
+    return jsonify(error.messages), 400
+
+
+@api.errorhandler(InvalidHeaderError)
+def handle_InvalidHeaderError(error):
+    return jsonify(error.messages), 400
+
+
+@api.errorhandler(ExpiredSignatureError)
+def handle_ExpiredSignatureError(error):
+    return jsonify(error.messages), 400
+
+
+@api.errorhandler(InvalidSignatureError)
+def handle_InvalidSignatureError(error):
+    return jsonify(error.messages), 400
+
+
+@api.errorhandler(IntegrityError)
+def handle_IntegrityError(error):
+    return jsonify(error.messages), 400
+
+
 # Defining resources ----------------------------------------------------------
 # Account app
 account_resource.namespace.add_resource(account_resource.AccountResource,
@@ -85,7 +114,6 @@ account_resource.namespace.add_resource(
 
 authentication_resource.namespace.add_resource(
     authentication_resource.AuthenticationResource, "/")
-
 
 # Film app
 category_resource.namespace.add_resource(category_resource.CategoryResource,
@@ -143,7 +171,6 @@ jwt = JWTManager(app)
 
 
 # JWT related
-'''
 @jwt.user_claims_loader
 def add_claims_to_jwt(identity):
     account = AccountModel.find_by_id(identity)
@@ -153,7 +180,7 @@ def add_claims_to_jwt(identity):
         return {'is_admin': False, 'is_employee': True}
     else:
         return {'is_admin': False, 'is_employee': False}
-'''
+
 
 if os.getenv('DEBUG_STATE') == 'True':
     app.run(port=os.getenv('PORT'), debug=True)

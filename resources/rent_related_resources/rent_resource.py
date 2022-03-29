@@ -1,4 +1,5 @@
 from flask import request, jsonify, make_response
+from flask_jwt_extended import get_jwt_claims, jwt_required
 from flask_restplus import fields, Namespace, Resource
 from marshmallow import ValidationError
 from datetime import datetime
@@ -34,7 +35,13 @@ class RentResource(Resource):
             return schema.dump(model_data)
         return {'message': message_not_found}, 404
 
+    @jwt_required
     def delete(self, id):
+        claims = get_jwt_claims()
+
+        if not claims['is_admin'] and not claims['is_employee']:
+            return {'message': 'Admin privilege required.'}, 401
+
         model_data = model.find_by_id(id)
         if model_data:
             model_data.delete_from_db()
@@ -42,8 +49,14 @@ class RentResource(Resource):
                                f" Deleted successfully"}, 200
         return {'message': message_not_found}, 404
 
+    @jwt_required
     @namespace.expect(model_namespace)
     def put(self, id):
+        claims = get_jwt_claims()
+
+        if not claims['is_admin'] and not claims['is_employee']:
+            return {'message': 'Admin privilege required.'}, 401
+
         model_data = model.find_by_id(id)
         model_json = request.get_json()
 
@@ -56,7 +69,9 @@ class RentResource(Resource):
             model_data.return_date = datetime.strptime(
                 model_json['return_date']
                 , '%Y-%m-%d').date()
-            model_data.actual_return_date = model_json['actual_return_date']
+            model_data.actual_return_date = datetime.strptime(
+                model_json['actual_return_date']
+                , '%Y-%m-%d').date()
             model_data.state = model_json['state']
         else:
             model_data = schema.load(model_json)
@@ -74,9 +89,15 @@ class RentResourceList(Resource):
     def get(self):
         return list_schema.dump(model.find_all()), 200
 
+    @jwt_required
     @namespace.expect(model_namespace)
     @namespace.doc(f'Create an {model_name_singular}')
     def post(self):
+        claims = get_jwt_claims()
+
+        if not claims['is_admin'] and not claims['is_employee']:
+            return {'message': 'Admin privilege required.'}, 401
+
         model_json = request.get_json()
         model_data = schema.load(model_json)
         try:

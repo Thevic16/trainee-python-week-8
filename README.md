@@ -26,11 +26,12 @@ Also, If you wish you can create your accounts using the followings links.<br />
 - Register your account. <br />
 link: https://week7-film-rental-system.herokuapp.com/api/account/
 
+Note: you must provide admin token. 
 
 # Heroku URLs for generate and refresh JWT token.
-Note: This is using "JWT" as the JWT prefix. 
+Note: This is using "Bearer" as the JWT prefix. 
 
-link: https://week7-film-rental-system.herokuapp.com/auth/
+link: https://week7-film-rental-system.herokuapp.com/api/authentication
 
 
 # Heroku URl for API documentation. 
@@ -59,4 +60,8 @@ link: https://week7-film-rental-system.herokuapp.com/api/rents/
 
 # Note about Phone number format in clients App.
 The app receive phone number of the following format: "XXX-XXXX-XXXX" 
-where X = number 
+where X = number
+
+# Note about Date format.
+Year-mouth-day example 2020-03-24
+

@@ -1,6 +1,8 @@
 from flask import request, jsonify, make_response
+from flask_jwt_extended import jwt_required, get_jwt_claims
 from flask_restplus import fields, Namespace, Resource
 from marshmallow import ValidationError
+from datetime import datetime
 
 from models.models import PersonModel
 from schemas.schemas import PersonSchema
@@ -30,7 +32,13 @@ class PersonResource(Resource):
             return schema.dump(model_data)
         return {'message': message_not_found}, 404
 
+    @jwt_required
     def delete(self, id):
+        claims = get_jwt_claims()
+
+        if not claims['is_admin']:
+            return {'message': 'Admin privilege required.'}, 401
+
         model_data = model.find_by_id(id)
         if model_data:
             model_data.delete_from_db()
@@ -38,8 +46,14 @@ class PersonResource(Resource):
                                f" Deleted successfully"}, 200
         return {'message': message_not_found}, 404
 
+    @jwt_required
     @namespace.expect(model_namespace)
     def put(self, id):
+        claims = get_jwt_claims()
+
+        if not claims['is_admin']:
+            return {'message': 'Admin privilege required.'}, 401
+
         model_data = model.find_by_id(id)
         model_json = request.get_json()
 
@@ -47,7 +61,9 @@ class PersonResource(Resource):
             model_data.name = model_json['name']
             model_data.lastname = model_json['lastname']
             model_data.gender = model_json['gender']
-            model_data.date_of_birth = model_json['date_of_birth']
+            model_data.date_of_birth = datetime.strptime(
+                model_json['date_of_birth'],
+                '%Y-%m-%d').date()
             model_data.person_type = model_json['person_type']
         else:
             model_data = schema.load(model_json)
@@ -65,9 +81,15 @@ class PersonResourceList(Resource):
     def get(self):
         return list_schema.dump(model.find_all()), 200
 
+    @jwt_required
     @namespace.expect(model_namespace)
     @namespace.doc(f'Create an {model_name_singular}')
     def post(self):
+        claims = get_jwt_claims()
+
+        if not claims['is_admin']:
+            return {'message': 'Admin privilege required.'}, 401
+
         model_json = request.get_json()
         model_data = schema.load(model_json)
 

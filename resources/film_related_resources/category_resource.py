@@ -1,4 +1,5 @@
 from flask import request, jsonify, make_response
+from flask_jwt_extended import jwt_required, get_jwt_claims
 from flask_restplus import fields, Namespace, Resource
 from marshmallow import ValidationError
 
@@ -27,7 +28,13 @@ class CategoryResource(Resource):
             return schema.dump(model_data)
         return {'message': message_not_found}, 404
 
+    @jwt_required
     def delete(self, id):
+        claims = get_jwt_claims()
+
+        if not claims['is_admin']:
+            return {'message': 'Admin privilege required.'}, 401
+
         model_data = model.find_by_id(id)
         if model_data:
             model_data.delete_from_db()
@@ -35,8 +42,14 @@ class CategoryResource(Resource):
                                f" Deleted successfully"}, 200
         return {'message': message_not_found}, 404
 
+    @jwt_required
     @namespace.expect(model_namespace)
     def put(self, id):
+        claims = get_jwt_claims()
+
+        if not claims['is_admin']:
+            return {'message': 'Admin privilege required.'}, 401
+
         model_data = model.find_by_id(id)
         model_json = request.get_json()
 
@@ -59,9 +72,15 @@ class CategoryResourceList(Resource):
     def get(self):
         return list_schema.dump(model.find_all()), 200
 
+    @jwt_required
     @namespace.expect(model_namespace)
     @namespace.doc(f'Create an {model_name_singular}')
     def post(self):
+        claims = get_jwt_claims()
+
+        if not claims['is_admin']:
+            return {'message': 'Admin privilege required.'}, 401
+
         model_json = request.get_json()
         model_data = schema.load(model_json)
         try:

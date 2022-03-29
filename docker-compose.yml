@@ -5,8 +5,6 @@ services:
     container_name: flask_film_rental_system
     image: flask_film_rental_system
     build: .
-    ports:
-      - "5000:5000"
     env_file:
       - .env
     depends_on:

@@ -24,39 +24,39 @@ Password: employee12345678
 Also, If you wish you can create your accounts using the followings links.<br />
 
 - Register your account. <br />
-link: https://week7-film-rental-system.herokuapp.com/api/account/
+link: https://week8-film-rental-system.herokuapp.com/api/account/
 
 Note: you must provide admin token. 
 
 # Heroku URLs for generate and refresh JWT token.
 Note: This is using "Bearer" as the JWT prefix. 
 
-link: https://week7-film-rental-system.herokuapp.com/api/authentication
+link: https://week8-film-rental-system.herokuapp.com/api/authentication
 
 
 # Heroku URl for API documentation. 
-link: https://week7-film-rental-system.herokuapp.com/api/doc/
+link: https://week8-film-rental-system.herokuapp.com/api/doc/
 
 # Heroku URLs API apps (accounts, categories, films, seasons, chapters, persons, roles, films-persons-roles, clients and rents).
-link: https://week7-film-rental-system.herokuapp.com/api/accounts/
+link: https://week8-film-rental-system.herokuapp.com/api/accounts/
 
-link: https://week7-film-rental-system.herokuapp.com/api/categories/
+link: https://week8-film-rental-system.herokuapp.com/api/categories/
 
-link: https://week7-film-rental-system.herokuapp.com/api/films/
+link: https://week8-film-rental-system.herokuapp.com/api/films/
 
-link: https://week7-film-rental-system.herokuapp.com/api/seasons/
+link: https://week8-film-rental-system.herokuapp.com/api/seasons/
 
-link: https://week7-film-rental-system.herokuapp.com/api/chapters/
+link: https://week8-film-rental-system.herokuapp.com/api/chapters/
 
-link: https://week7-film-rental-system.herokuapp.com/api/persons/
+link: https://week8-film-rental-system.herokuapp.com/api/persons/
 
-link: https://week7-film-rental-system.herokuapp.com/api/roles/
+link: https://week8-film-rental-system.herokuapp.com/api/roles/
 
-link: https://week7-film-rental-system.herokuapp.com/api/films-persons-roles/
+link: https://week8-film-rental-system.herokuapp.com/api/films-persons-roles/
 
-link: https://week7-film-rental-system.herokuapp.com/api/clients/
+link: https://week8-film-rental-system.herokuapp.com/api/clients/
 
-link: https://week7-film-rental-system.herokuapp.com/api/rents/
+link: https://week8-film-rental-system.herokuapp.com/api/rents/
 
 # Note about Phone number format in clients App.
 The app receive phone number of the following format: "XXX-XXXX-XXXX" 
